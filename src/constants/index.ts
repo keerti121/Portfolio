@@ -285,7 +285,7 @@ export const SOCIALS = [
   {
     name: "Email",
     icon: youtube, // SVG icon fallback
-    link: "mailto:keerti.yadav.23cse@bmu.in",
+    link: "mailto:keerti.yadav.23cse@bmu.edu.in",
   },
   {
     name: "Linkedin",

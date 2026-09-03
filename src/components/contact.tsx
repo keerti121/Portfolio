@@ -98,8 +98,8 @@ const ContactForm = () => {
     const body = encodeURIComponent(
       `Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`
     );
-    window.location.href = `mailto:keerti.yadav.23cse@bmu.in?subject=${subject}&body=${body}`;
-    toast.success("Opening your email client to send message to keerti.yadav.23cse@bmu.in");
+    window.location.href = `mailto:keerti.yadav.23cse@bmu.edu.in?subject=${subject}&body=${body}`;
+    toast.success("Opening your email client to send message to keerti.yadav.23cse@bmu.edu.in");
     setForm({
       name: "",
       email: "",
@@ -273,8 +273,8 @@ export const Contact = () => {
           <div className="mt-4 flex flex-col gap-2 text-secondary text-[15px]">
             <p>
               📧 <span className="font-semibold text-white">Email:</span>{" "}
-              <a href="mailto:keerti.yadav.23cse@bmu.in" className="hover:text-white underline">
-                keerti.yadav.23cse@bmu.in
+              <a href="mailto:keerti.yadav.23cse@bmu.edu.in" className="hover:text-white underline">
+                keerti.yadav.23cse@bmu.edu.in
               </a>
             </p>
             <p>
