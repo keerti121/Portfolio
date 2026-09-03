@@ -87,7 +87,9 @@ Here is the folder structure of this app.
   |- .env/.env.local
   |- .gitignore
   |- index.html
+  |- keerti_cv.pdf
   |- netlify.toml
+  |- package-lock.json
   |- package.json
   |- pnpm-lock.yaml
   |- pnpm-workspace.yaml
