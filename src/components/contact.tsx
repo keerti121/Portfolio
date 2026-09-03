@@ -152,7 +152,41 @@ const ContactForm = () => {
         }
       }
 
-      // Fallback to mailto if API/reCAPTCHA is unavailable
+      // 2. Try Web3Forms direct email delivery if key configured
+      const web3Key = import.meta.env.VITE_WEB3FORMS_KEY;
+      if (web3Key) {
+        const web3Response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            access_key: web3Key,
+            name: form.name,
+            email: form.email,
+            message: form.message,
+            subject: `New Portfolio Message from ${form.name}`,
+          }),
+        });
+
+        if (web3Response.ok) {
+          toast.success("Thanks for contacting me! Your message has been sent to keerti.yadav.23cse@bmu.edu.in.");
+          setForm({
+            name: "",
+            email: "",
+            message: "",
+          });
+          setFieldErrors({
+            name: false,
+            email: false,
+            message: false,
+          });
+          return;
+        }
+      }
+
+      // 3. Fallback to mailto if API/reCAPTCHA is unavailable
       sendViaMailto();
     } catch (error) {
       console.warn("[CONTACT_FALLBACK_TO_MAILTO]: ", error);
