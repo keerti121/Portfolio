@@ -155,22 +155,68 @@ const ContactForm = () => {
       // 2. Direct email delivery via Web3Forms API
       const web3Key = import.meta.env.VITE_WEB3FORMS_KEY || "9e7934c4-53f7-4176-a457-88804b1dbadc";
       if (web3Key) {
-        const web3Response = await fetch("https://api.web3forms.com/submit", {
+        try {
+          const web3Response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify({
+              access_key: web3Key,
+              name: form.name,
+              email: form.email,
+              message: form.message,
+              subject: `New Portfolio Message from ${form.name}`,
+            }),
+          });
+
+          const web3Data = (await web3Response.json().catch(() => null)) as {
+            success?: boolean;
+            message?: string;
+          } | null;
+
+          if (web3Response.ok && web3Data?.success) {
+            toast.success("Thanks for contacting me! Your message has been sent to keerti.yadav.23cse@bmu.edu.in.");
+            setForm({
+              name: "",
+              email: "",
+              message: "",
+            });
+            setFieldErrors({
+              name: false,
+              email: false,
+              message: false,
+            });
+            return;
+          }
+        } catch (err) {
+          console.warn("[WEB3FORMS_FAILED]:", err);
+        }
+      }
+
+      // 3. Fallback to FormSubmit service
+      try {
+        const fsResponse = await fetch("https://formsubmit.co/ajax/keerti.yadav.23cse@bmu.edu.in", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
           },
           body: JSON.stringify({
-            access_key: web3Key,
             name: form.name,
             email: form.email,
             message: form.message,
-            subject: `New Portfolio Message from ${form.name}`,
+            _subject: `New Portfolio Message from ${form.name}`,
           }),
         });
 
-        if (web3Response.ok) {
+        const fsData = (await fsResponse.json().catch(() => null)) as {
+          success?: string;
+          message?: string;
+        } | null;
+
+        if (fsResponse.ok || fsData?.success === "true") {
           toast.success("Thanks for contacting me! Your message has been sent to keerti.yadav.23cse@bmu.edu.in.");
           setForm({
             name: "",
@@ -184,9 +230,11 @@ const ContactForm = () => {
           });
           return;
         }
+      } catch (err) {
+        console.warn("[FORMSUBMIT_FAILED]:", err);
       }
 
-      // 3. Fallback to mailto if API/reCAPTCHA is unavailable
+      // 4. Final Fallback to mailto
       sendViaMailto();
     } catch (error) {
       console.warn("[CONTACT_FALLBACK_TO_MAILTO]: ", error);
