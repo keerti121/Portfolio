@@ -153,7 +153,7 @@ const ContactForm = () => {
       }
 
       // 2. Direct email delivery via Web3Forms API
-      const web3Key = import.meta.env.VITE_WEB3FORMS_KEY || "1bfc94a7-f9b5-444d-875c-05dc453adf7c";
+      const web3Key = import.meta.env.VITE_WEB3FORMS_KEY || "9e7934c4-53f7-4176-a457-88804b1dbadc";
       if (web3Key) {
         const web3Response = await fetch("https://api.web3forms.com/submit", {
           method: "POST",
